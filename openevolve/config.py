@@ -19,6 +19,9 @@ class LLMModelConfig:
     api_key: Optional[str] = None
     name: str = None
 
+    # Provider type (openai, bedrock, etc.)
+    provider: Optional[str] = None
+
     # Weight for model in ensemble
     weight: float = 1.0
 
@@ -35,6 +38,12 @@ class LLMModelConfig:
 
     # Reproducibility
     random_seed: Optional[int] = None
+
+    # AWS Bedrock specific configuration
+    aws_region: Optional[str] = None
+    aws_profile: Optional[str] = None
+    aws_access_key_id: Optional[str] = None
+    aws_secret_access_key: Optional[str] = None
 
 
 @dataclass

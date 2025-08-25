@@ -1,0 +1,87 @@
+# OpenEvolve AWS Bedrock Example Configuration
+# This file demonstrates how to configure OpenEvolve with AWS Bedrock models
+
+# General settings
+max_iterations: 50
+checkpoint_interval: 10
+log_level: "INFO"
+random_seed: 42
+
+# Evolution settings
+diff_based_evolution: true
+max_code_length: 10000
+
+# LLM configuration with mixed Bedrock and OpenAI models
+llm:
+  # Models for evolution (can mix different providers)
+  models:
+    # AWS Bedrock Claude model
+    - name: "anthropic.claude-3-5-sonnet-20241022-v2:0"
+      provider: "bedrock"
+      aws_region: "us-east-1"
+      aws_profile: "default"  # Optional: Use AWS profile from ~/.aws/credentials
+      weight: 0.6
+      
+    # AWS Bedrock Amazon Titan model
+    - name: "amazon.titan-text-express-v1"
+      provider: "bedrock"
+      aws_region: "us-east-1"
+      # aws_access_key_id: "your_access_key"      # Optional: Direct credentials
+      # aws_secret_access_key: "your_secret_key"  # Optional: Direct credentials
+      weight: 0.2
+      
+    # OpenAI model for comparison
+    - name: "gpt-4o-mini"
+      provider: "openai"
+      api_base: "https://api.openai.com/v1"
+      # api_key will be read from OPENAI_API_KEY environment variable
+      weight: 0.2
+
+  # Models for LLM feedback (use Claude for evaluation)
+  evaluator_models:
+    - name: "anthropic.claude-3-5-sonnet-20241022-v2:0"
+      provider: "bedrock"
+      aws_region: "us-east-1"
+      aws_profile: "default"
+      weight: 1.0
+
+  # Generation parameters (applied to all models)
+  temperature: 0.7
+  top_p: 0.95
+  max_tokens: 4096
+  timeout: 120  # Increased timeout for Bedrock models
+  retries: 3
+  retry_delay: 5
+
+# Prompt configuration
+prompt:
+  system_message: "You are an expert coder helping to improve programs through evolution."
+  evaluator_system_message: "You are an expert code reviewer."
+  num_top_programs: 3
+  num_diverse_programs: 2
+  use_template_stochasticity: true
+  include_artifacts: true
+
+# Database configuration
+database:
+  in_memory: true
+  log_prompts: true
+  population_size: 1000
+  archive_size: 100
+  num_islands: 5
+  migration_interval: 50
+  migration_rate: 0.1
+  feature_dimensions:
+    - "complexity"
+    - "diversity"
+  feature_bins: 10
+
+# Evaluator configuration
+evaluator:
+  timeout: 300
+  max_retries: 3
+  cascade_evaluation: true
+  cascade_thresholds: [0.5, 0.75, 0.9]
+  parallel_evaluations: 4
+  use_llm_feedback: false  # Can enable for LLM-based evaluation
+  llm_feedback_weight: 0.1
