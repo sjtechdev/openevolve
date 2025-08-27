@@ -83,7 +83,12 @@ class LLMConfig(LLMModelConfig):
             # Create primary model
             primary_model = LLMModelConfig(
                 name=self.primary_model,
-                weight=self.primary_model_weight or 1.0
+                weight=self.primary_model_weight or 1.0,
+                provider=self.provider,
+                aws_region=self.aws_region,
+                aws_profile=self.aws_profile,
+                aws_access_key_id=self.aws_access_key_id,
+                aws_secret_access_key=self.aws_secret_access_key
             )
             self.models.append(primary_model)
 
@@ -92,7 +97,12 @@ class LLMConfig(LLMModelConfig):
             if self.secondary_model_weight is None or self.secondary_model_weight > 0:
                 secondary_model = LLMModelConfig(
                     name=self.secondary_model,
-                    weight=self.secondary_model_weight if self.secondary_model_weight is not None else 0.2
+                    weight=self.secondary_model_weight if self.secondary_model_weight is not None else 0.2,
+                    provider=self.provider,
+                    aws_region=self.aws_region,
+                    aws_profile=self.aws_profile,
+                    aws_access_key_id=self.aws_access_key_id,
+                    aws_secret_access_key=self.aws_secret_access_key
                 )
                 self.models.append(secondary_model)
 
