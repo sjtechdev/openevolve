@@ -4,14 +4,12 @@ checkpoint_interval: 5
 
 # LLM configuration
 llm:
-  primary_model: "gemini-2.5-flash-lite"
-  # primary_model: "llama3.1-8b"
+  primary_model: "us.anthropic.claude-3-7-sonnet-20250219-v1:0"
   primary_model_weight: 0.8
-  secondary_model: "gemini-2.5-flash"
-  # secondary_model: "llama-4-scout-17b-16e-instruct"
+  secondary_model: "anthropic.claude-3-haiku-20240307-v1:0"
   secondary_model_weight: 0.2
-  api_base: "https://generativelanguage.googleapis.com/v1beta/openai/"
-  # api_base: "https://api.cerebras.ai/v1"
+  provider: "bedrock"
+  aws_region: "us-east-1"
   temperature: 0.7
   max_tokens: 16000
   timeout: 120
